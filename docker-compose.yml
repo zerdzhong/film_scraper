@@ -1,0 +1,12 @@
+version: '3.0'
+
+services:
+  film_scraper:
+    build: .
+    depends_on: 
+      - scraping_splash
+
+  scraping_splash:
+    image: scrapinghub/splash
+    ports: 
+      - ""
