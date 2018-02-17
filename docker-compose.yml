@@ -1,12 +1,14 @@
 version: '3.0'
 
 services:
-  film_scraper:
-    build: .
-    depends_on: 
-      - scraping_splash
-
-  scraping_splash:
+  splash:
     image: scrapinghub/splash
     ports: 
-      - ""
+      - 8050:8050
+      - 5023:5023
+
+  scraper:
+    build: .
+    links: 
+      - splash
+    command: scrapy crawl douban_film_spider
