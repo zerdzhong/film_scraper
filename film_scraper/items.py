@@ -5,10 +5,17 @@
 # See documentation in:
 # https://doc.scrapy.org/en/latest/topics/items.html
 
-import scrapy
+from scrapy import  Item, Field
 
 
-class FilmScraperItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+class DoubanMovieItem(Item):
+    # ID
+    id = Field()
+    # 名称
+    name = Field()
+    # 缩略图地址
+    post_img_url = Field()
+    # 详情地址
+    detail_url = Field()
+    # 评分
+    rate = Field()
