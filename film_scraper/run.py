@@ -4,6 +4,6 @@ from scrapy import cmdline
 
 local_splash_url = 'http://localhost:8050'
 
-name = 'douban_film_spider'
+name = 'douban_coming_film'
 cmd = 'scrapy crawl {0} -s SPLASH_URL={1} -o test.csv'.format(name, local_splash_url)
 cmdline.execute(cmd.split())

@@ -5,10 +5,10 @@
 # See documentation in:
 # https://doc.scrapy.org/en/latest/topics/items.html
 
-from scrapy import  Item, Field
+from scrapy import Item, Field
 
 
-class DoubanMovieItem(Item):
+class DoubanFilmItem(Item):
     # ID
     id = Field()
     # 名称
@@ -19,3 +19,10 @@ class DoubanMovieItem(Item):
     detail_url = Field()
     # 评分
     rate = Field()
+
+
+class DoubanComingFilmItem(DoubanFilmItem):
+    # 想看
+    wish_watch_count = Field()
+    # 上映日期
+    play_date = Field()
