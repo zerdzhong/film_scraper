@@ -23,10 +23,10 @@ class DoubanComingFilm(Spider):
 
         coming_film = DoubanComingFilmItem()
         for table_row in coming_list.xpath('./tbody//tr'):
-            film_detail_url = table_row.xpath('.//@herf').extract()
+            film_detail_url = table_row.xpath('.//@href').extract()
             film_info = table_row.xpath('.//text()').extract()
             film_info = list(map(str.strip, film_info))
-            film_info = list(filter(string_util.is_valid_string, film_info))
+            film_info = list(filter(string_util.valid_string, film_info))
 
             for url in film_detail_url:
                 yield Request(url, callback=self.parse)

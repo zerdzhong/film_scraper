@@ -20,7 +20,7 @@ class DoubanFilmChart (Spider):
             detail_url = response_film_item.xpath('./@href').extract()
             post_image_src = response_film_item.xpath('.//img[@alt]/@src').extract()
             film_name = response_film_item.xpath('.//p/text()').extract()
-            film_name = list(filter(string_util.is_valid_string, film_name))
+            film_name = list(filter(string_util.valid_string, film_name))
             film_name = list(map(str.strip, film_name))
 
             film_item['name'] = film_name[0]
