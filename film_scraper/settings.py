@@ -66,9 +66,9 @@ DOWNLOADER_MIDDLEWARES = {
 
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'film_scraper.pipelines.FilmScraperPipeline': 300,
-#}
+ITEM_PIPELINES = {
+   'film_scraper.pipelines.MongoPipeline': 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html
@@ -94,3 +94,6 @@ DOWNLOADER_MIDDLEWARES = {
 SPLASH_URL = 'http://splash:8050'  
 DUPEFILTER_CLASS = 'scrapy_splash.SplashAwareDupeFilter'
 HTTPCACHE_STORAGE = 'scrapy_splash.SplashAwareFSCacheStorage'
+
+MONGO_URI = 'mongodb://mongo:27017'
+MONGO_DATABASE = 'douban_film_db'

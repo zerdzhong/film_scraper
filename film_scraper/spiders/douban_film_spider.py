@@ -38,7 +38,8 @@ class DoubanFilmSpider(Spider):
 
         yield film_item
 
-    def film_response_info_parse(self, response, film_item):
+    @staticmethod
+    def film_response_info_parse(response, film_item):
         for info_response in response.xpath('./span'):
             info_type = info_response.xpath('./span[@class="pl"]/text()').extract()
 
