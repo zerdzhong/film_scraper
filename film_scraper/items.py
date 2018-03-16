@@ -37,3 +37,5 @@ class DoubanComingFilmItem(DoubanFilmBaseItem):
     wish_watch_count = Field()
     # 上映日期
     play_date = Field()
+    # 详情地址
+    detail_url = Field()

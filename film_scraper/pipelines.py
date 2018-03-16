@@ -8,11 +8,14 @@
 
 import pymongo
 from scrapy.exceptions import DropItem
+from film_scraper.items import DoubanComingFilmItem
+from film_scraper.items import DoubanFilmItem
 
 
 class MongoPipeline(object):
     film_collection_name = 'film'
     chart_collection_name = 'chart'
+    coming_collection_name = 'coming_films'
 
     def __init__(self, mongo_uri, mongo_db):
         self.mongo_uri = mongo_uri
@@ -34,9 +37,12 @@ class MongoPipeline(object):
         self.client.close()
 
     def process_item(self, item, spider):
-        if item['id'] in self.saved_films:
-            raise DropItem("Duplicate item found: %s" % item) 
-        else:
-            self.saved_films.add(item['id'])
-            self.db[self.collection_name].insert(dict(item))
-            return item
+        if isinstance(item, DoubanComingFilmItem):
+            self.db[self.coming_collection_name].insert(dict(item))
+        elif isinstance(item, DoubanFilmItem):
+            if item['id'] in self.saved_films:
+                raise DropItem("Duplicate item found: %s" % item) 
+            else:
+                self.saved_films.add(item['id'])
+                self.db[self.film_collection_name].insert(dict(item))
+                return item

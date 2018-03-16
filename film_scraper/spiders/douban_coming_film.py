@@ -28,9 +28,10 @@ class DoubanComingFilm(Spider):
             film_info = list(map(str.strip, film_info))
             film_info = list(filter(string_util.valid_string, film_info))
 
-            for url in film_detail_url:
-                yield Request(url, callback=self.parse)
+            # for url in film_detail_url:
+            #     yield Request(url, callback=self.parse)
 
+            coming_film['detail_url'] = film_detail_url[0]
             coming_film['wish_watch_count'] = self.__row_value(film_info, COMING_FILM_WISH)
             coming_film['play_date'] = self.__row_value(film_info, COMING_DATE)
             coming_film['name'] = self.__row_value(film_info, COMING_FILM_NAME)
@@ -38,6 +39,9 @@ class DoubanComingFilm(Spider):
             yield coming_film
 
     def __row_value(self, table_row, row_str):
+        if row_str not in self.__coming_table_header:
+            return ''
+
         row_index = self.__coming_table_header.index(row_str)
         if len(table_row) > row_index:
             return table_row[row_index]
