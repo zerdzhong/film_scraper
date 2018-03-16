@@ -11,13 +11,15 @@ from scrapy.exceptions import DropItem
 
 
 class MongoPipeline(object):
-    collection_name = 'film'
+    film_collection_name = 'film'
+    chart_collection_name = 'chart'
 
     def __init__(self, mongo_uri, mongo_db):
         self.mongo_uri = mongo_uri
         self.mongo_db = mongo_db
         self.client = pymongo.MongoClient(self.mongo_uri)
         self.db = self.client[self.mongo_db]
+        self.saved_films = set()
 
     @classmethod
     def from_crawler(cls, crawler):
@@ -32,5 +34,9 @@ class MongoPipeline(object):
         self.client.close()
 
     def process_item(self, item, spider):
-        self.db[self.collection_name].insert(dict(item))
-        return item
+        if item['id'] in self.saved_films:
+            raise DropItem("Duplicate item found: %s" % item) 
+        else:
+            self.saved_films.add(item['id'])
+            self.db[self.collection_name].insert(dict(item))
+            return item
