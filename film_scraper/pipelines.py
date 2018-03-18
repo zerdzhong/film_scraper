@@ -22,6 +22,8 @@ class MongoPipeline(object):
         self.mongo_db = mongo_db
         self.client = pymongo.MongoClient(self.mongo_uri)
         self.db = self.client[self.mongo_db]
+        self.db[self.film_collection_name].create_index('id', unique=True)
+        self.db[self.coming_collection_name].create_index('detail_url', unique=True)
         self.saved_films = set()
 
     @classmethod
@@ -38,11 +40,11 @@ class MongoPipeline(object):
 
     def process_item(self, item, spider):
         if isinstance(item, DoubanComingFilmItem):
-            self.db[self.coming_collection_name].insert(dict(item))
+            self.db[self.coming_collection_name].update_one({'detail_url': item['detail_url']}, {'$set': dict(item)}, True)
         elif isinstance(item, DoubanFilmItem):
             if item['id'] in self.saved_films:
                 raise DropItem("Duplicate item found: %s" % item) 
             else:
                 self.saved_films.add(item['id'])
-                self.db[self.film_collection_name].insert(dict(item))
+                self.db[self.film_collection_name].update_one({'id': item['id']}, {'$set': dict(item)}, True)
                 return item
