@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
+from scrapy import Request
 
-from scrapy.spiders import Spider
-from scrapy.spiders import Request
 from film_scraper.items import DoubanComingFilmItem
 from film_scraper.utils import string_util
+from film_scraper.spiders.douban_film_spider import DoubanFilmSpider
+
 
 COMING_DATE = '上映日期'
 COMING_FILM_NAME = '片名'
@@ -12,7 +13,7 @@ COMING_FILM_REGION = '制片国家 / 地区'
 COMING_FILM_WISH = '想看'
 
 
-class DoubanComingFilm(Spider):
+class DoubanComingFilm(DoubanFilmSpider):
     name = 'douban_coming_film'
     start_urls = ['https://movie.douban.com/coming']
     __coming_table_header = []
@@ -28,8 +29,8 @@ class DoubanComingFilm(Spider):
             film_info = list(map(str.strip, film_info))
             film_info = list(filter(string_util.valid_string, film_info))
 
-            # for url in film_detail_url:
-            #     yield Request(url, callback=self.parse)
+            for url in film_detail_url:
+                yield Request(url, callback=self.parse_item)
 
             coming_film['detail_url'] = film_detail_url[0]
             coming_film['wish_watch_count'] = self.__row_value(film_info, COMING_FILM_WISH)

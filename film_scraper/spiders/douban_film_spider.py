@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from scrapy import Request
 from scrapy.spiders import Spider
 from scrapy_splash import SplashRequest
 from film_scraper.items import DoubanFilmItem
@@ -12,9 +12,13 @@ FILM_ACTOR = '主演'
 
 class DoubanFilmSpider(Spider):
     name = 'douban_film_spider'
+    allow_domains = ['movie.douban.com']
     start_urls = ['https://movie.douban.com/subject/6390825/']
 
     def parse(self, response):
+        self.parse_item(response)
+
+    def parse_item(self, response):
         film_item = DoubanFilmItem()
 
         # film rating 评分
