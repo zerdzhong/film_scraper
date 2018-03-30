@@ -19,3 +19,12 @@ def valid_positive_number(s):
     return re.match(POSITIVE_NUMBER_RE, s)
 
 
+def safe_first_string(items):
+    return safe_string_list(items, 0)
+
+
+def safe_string_list(items, index):
+    if len(items) > index:
+        return items[index]
+    else:
+        return ""

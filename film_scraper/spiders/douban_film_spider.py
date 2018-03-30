@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-from scrapy import Request
+
 from scrapy.spiders import Spider
-from scrapy_splash import SplashRequest
 from film_scraper.items import DoubanFilmItem
 from film_scraper.utils import string_util
 
@@ -35,10 +34,11 @@ class DoubanFilmSpider(Spider):
 
         film_item['name'] = film_name
         film_item['post_img_url'] = image_src
-        film_item['rate'] = rating
-        film_item['rate_sum'] = rating_sum
         film_item['detail_url'] = response.url
-        film_item['id'] = response.xpath('.//a/@share-id').extract()[0]
+
+        film_item['rate'] = string_util.safe_first_string(rating)
+        film_item['rate_sum'] = string_util.safe_first_string(rating_sum)
+        film_item['id'] = string_util.safe_first_string(response.xpath('.//a/@share-id').extract())
 
         yield film_item
 
