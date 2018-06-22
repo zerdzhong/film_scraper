@@ -24,12 +24,15 @@ services:
     command: mongod --smallfiles --logpath=/dev/null # --quiet
     networks:
       - film_scraper
+      - default
 
   scraper:
     container_name: "film_scraper"
+    image: zerdzhong/film_scraper
     build: .
     networks:
       - film_scraper
+      - default
     links: 
       - splash
       - mongo
